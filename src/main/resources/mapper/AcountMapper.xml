@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ylf.cache.dao.AcountMapper" >
+  <resultMap id="BaseResultMap" type="com.ylf.cache.entity.Acount" >
+    <result column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="pass" property="pass" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="age" property="age" jdbcType="INTEGER" />
+  </resultMap>
+  <insert id="insert" parameterType="com.ylf.cache.entity.Acount" >
+    insert into acount (id, name, pass, 
+      sex, age)
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{pass,jdbcType=VARCHAR}, 
+      #{sex,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER})
+  </insert>
+
+  <update id="updateAcount" parameterType="com.ylf.cache.entity.Acount">
+    UPDATE acount set name=#{name},pass=#{pass},sex=#{sex},age=#{age} where id=#{id}
+  </update>
+  
+  <select id="selectSelective" parameterType="com.ylf.cache.entity.AcountReq" resultMap="BaseResultMap">
+       select * from acount
+       <where>
+          <if test="id!=null">
+            id=#{id}
+          </if>
+         <if test="name!=null">
+           and name=#{name}
+         </if>
+         <if test="pass!=null">
+           and pass=#{pass}
+         </if>
+         <if test="sex!=null">
+            and sex=#{sex}
+         </if>
+         <if test="age!=null">
+            and age=#{age}
+         </if>
+       </where>
+       <if test="orderByType==null">
+         order by age DESC
+       </if>
+       <if test="orderByType==1">
+         order by age DESC
+       </if>
+       <if test="orderByType==2">
+         order by age ASC
+       </if>
+  </select>
+  <insert id="insertSelective" parameterType="com.ylf.cache.entity.AcountReq" >
+    insert into acount
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="pass != null" >
+        pass,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="age != null" >
+        age,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="pass != null" >
+        #{pass,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null" >
+        #{age,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+</mapper>
